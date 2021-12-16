@@ -30,20 +30,12 @@ private val moshi = Moshi.Builder()
     .build()
 
 object Network {
-//    val logging = HttpLoggingInterceptor().also {
-//        it.setLevel(HttpLoggingInterceptor.Level.BODY)
-//    }
-//
-//    val client = OkHttpClient.Builder()
-//    .addInterceptor(logging)
-//    .build();
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(Constants.BASE_URL)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
-//        .client(client)
         .build()
 
     val apiService = retrofit.create(NasaApiService::class.java)

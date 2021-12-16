@@ -17,7 +17,10 @@ import org.json.JSONObject
 
 class NasaDataRepository(val database: AsteroidDatabase) {
 
-    var pictureOfDayLifeData: MutableLiveData<PictureOfDay> = MutableLiveData()
+    private var _pictureOfDayLifeData: MutableLiveData<PictureOfDay> = MutableLiveData()
+
+    val pictureOfDayLifeData: LiveData<PictureOfDay>
+        get() = _pictureOfDayLifeData
 
     val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.asteroidDao.getListOfAsteroids()) {
         it.asDomainModel()
@@ -28,7 +31,7 @@ class NasaDataRepository(val database: AsteroidDatabase) {
             kotlin.runCatching {
                 Network.apiService.getPictureOfTheDay(BuildConfig.NASA_API_KEY).body()!!
             }.onSuccess {
-                pictureOfDayLifeData.postValue(it)
+                _pictureOfDayLifeData.postValue(it)
             }.onFailure {
                 it.printStackTrace()
             }

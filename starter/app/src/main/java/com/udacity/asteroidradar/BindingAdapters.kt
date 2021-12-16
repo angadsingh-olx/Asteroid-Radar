@@ -16,8 +16,26 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     }
 }
 
+@BindingAdapter("hazardDescription")
+fun bindHazardDescription(textView: ImageView, isHazardous: Boolean) {
+    textView.contentDescription = if (isHazardous) {
+        textView.resources.getString(R.string.potentially_hazardous_asteroid_image)
+    } else {
+        textView.resources.getString(R.string.not_hazardous_asteroid_image)
+    }
+}
+
+@BindingAdapter("pictureOfDayDescription")
+fun bindPictureOfDayDescription(textView: ImageView, title: String?) {
+    textView.contentDescription = if (!title.isNullOrEmpty()) {
+        textView.resources.getString(R.string.nasa_picture_of_day_content_description_format, title)
+    } else {
+        textView.resources.getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet)
+    }
+}
+
 @BindingAdapter("linkImage")
-fun bindDetailsStatusImage(imageView: ImageView, imageUrl: String?) {
+fun bindPoDImageLink(imageView: ImageView, imageUrl: String?) {
     if (imageUrl != null) {
         Picasso
             .with(imageView.context)

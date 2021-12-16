@@ -8,10 +8,13 @@ import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.getFormattedDate
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.domain.NasaDataRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
 
 class MainViewModel(application: Application) : ViewModel() {
+
+    private var currentJob: Job? = null
 
     private val repository = NasaDataRepository(getDatabase(application))
     val asteroidList: LiveData<List<Asteroid>>
@@ -35,9 +38,10 @@ class MainViewModel(application: Application) : ViewModel() {
     }
 
     fun onFilterChanged(filter: Filter = Filter.WEEK) {
+        currentJob?.cancel()
         when (filter) {
             Filter.WEEK -> {
-                viewModelScope.launch {
+                currentJob = viewModelScope.launch {
                     repository.getListOfAsteroids(
                         getFormattedDate(Calendar.getInstance()),
                         getFormattedDate(Calendar.getInstance().apply {
@@ -48,7 +52,7 @@ class MainViewModel(application: Application) : ViewModel() {
             }
 
             Filter.TODAY -> {
-                viewModelScope.launch {
+                currentJob = viewModelScope.launch {
                     repository.getListOfAsteroids(
                         getFormattedDate(Calendar.getInstance()),
                         getFormattedDate(Calendar.getInstance())
@@ -57,7 +61,7 @@ class MainViewModel(application: Application) : ViewModel() {
             }
 
             Filter.SAVED -> {
-                viewModelScope.launch {
+                currentJob = viewModelScope.launch {
                     repository.getListOfAsteroids(
                         getFormattedDate(Calendar.getInstance()),
                         getFormattedDate(Calendar.getInstance())
