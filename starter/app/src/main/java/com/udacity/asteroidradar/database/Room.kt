@@ -30,6 +30,9 @@ interface AsteroidDao {
 
     @Query("SELECT * from asteroid ORDER BY closeApproachDate DESC")
     fun getListOfAsteroids(): LiveData<List<AsteroidDBEntity>>
+
+    @Query("DELETE FROM asteroid")
+    suspend fun clearDB()
 }
 
 @Database(entities = [AsteroidDBEntity::class], version = 1)

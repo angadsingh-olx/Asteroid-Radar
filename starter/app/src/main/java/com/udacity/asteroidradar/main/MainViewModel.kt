@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.main
 import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.Filter
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.getFormattedDate
 import com.udacity.asteroidradar.database.getDatabase
@@ -13,7 +14,10 @@ import java.util.*
 class MainViewModel(application: Application) : ViewModel() {
 
     private val repository = NasaDataRepository(getDatabase(application))
-    val asteroidList = repository.asteroids
+    val asteroidList: LiveData<List<Asteroid>>
+        get() = _asteroidList
+
+    val _asteroidList = repository.asteroids
 
     val pictureOfDay: LiveData<PictureOfDay>
         get() = _pictureOfDay
@@ -25,10 +29,41 @@ class MainViewModel(application: Application) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            repository.getListOfAsteroids(getFormattedDate(Calendar.getInstance()), getFormattedDate(Calendar.getInstance().apply {
-                this.add(Calendar.DAY_OF_YEAR, 7)
-            }))
             repository.getPictureOfTheDay()
+            onFilterChanged(Filter.WEEK)
+        }
+    }
+
+    fun onFilterChanged(filter: Filter = Filter.WEEK) {
+        when (filter) {
+            Filter.WEEK -> {
+                viewModelScope.launch {
+                    repository.getListOfAsteroids(
+                        getFormattedDate(Calendar.getInstance()),
+                        getFormattedDate(Calendar.getInstance().apply {
+                            this.add(Calendar.DAY_OF_YEAR, 7)
+                        })
+                    )
+                }
+            }
+
+            Filter.TODAY -> {
+                viewModelScope.launch {
+                    repository.getListOfAsteroids(
+                        getFormattedDate(Calendar.getInstance()),
+                        getFormattedDate(Calendar.getInstance())
+                    )
+                }
+            }
+
+            Filter.SAVED -> {
+                viewModelScope.launch {
+                    repository.getListOfAsteroids(
+                        getFormattedDate(Calendar.getInstance()),
+                        getFormattedDate(Calendar.getInstance())
+                    )
+                }
+            }
         }
     }
 

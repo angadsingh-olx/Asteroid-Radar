@@ -19,7 +19,11 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
 @BindingAdapter("linkImage")
 fun bindDetailsStatusImage(imageView: ImageView, imageUrl: String?) {
     if (imageUrl != null) {
-        Picasso.with(imageView.context).load(imageUrl).into(imageView)
+        Picasso
+            .with(imageView.context)
+            .load(imageUrl)
+            .placeholder(R.color.app_background)
+            .into(imageView)
     }
 }
 

@@ -23,21 +23,35 @@ class NasaDataRepository(val database: AsteroidDatabase) {
         it.asDomainModel()
     }
 
-    suspend fun getPictureOfTheDay(){
+    suspend fun getPictureOfTheDay() {
         withContext(Dispatchers.IO) {
-
-            val result = Network.apiService.getPictureOfTheDay(BuildConfig.NASA_API_KEY).body()!!
-            pictureOfDayLifeData.postValue(result)
+            kotlin.runCatching {
+                Network.apiService.getPictureOfTheDay(BuildConfig.NASA_API_KEY).body()!!
+            }.onSuccess {
+                pictureOfDayLifeData.postValue(it)
+            }.onFailure {
+                it.printStackTrace()
+            }
         }
     }
 
     suspend fun getListOfAsteroids(startDate: String, endDate: String) {
         withContext(Dispatchers.IO) {
-            val response = Network.apiService.getNeoFeedData(BuildConfig.NASA_API_KEY, startDate, endDate)
-            if (response.isSuccessful) {
-                val result = parseAsteroidsJsonResult(JSONObject(response.body()!!))
-                database.asteroidDao.insertAllAsteroid(result.asDatabaseModel())
+            kotlin.runCatching {
+                Network.apiService.getNeoFeedData(BuildConfig.NASA_API_KEY, startDate, endDate)
+            }.onSuccess {
+                if (it.isSuccessful) {
+                    database.asteroidDao.clearDB()
+                    val result = parseAsteroidsJsonResult(JSONObject(it.body()!!))
+                    database.asteroidDao.insertAllAsteroid(result.asDatabaseModel())
+                }
+            }.onFailure {
+                it.printStackTrace()
             }
         }
+    }
+
+    suspend fun getSavedListOfAsteroids() {
+
     }
 }
