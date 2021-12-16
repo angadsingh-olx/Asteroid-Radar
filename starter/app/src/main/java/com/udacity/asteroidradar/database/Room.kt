@@ -28,14 +28,17 @@ interface AsteroidDao {
     @Insert(onConflict = REPLACE)
     suspend fun insertAllAsteroid(asteroidList: List<AsteroidDBEntity>)
 
-    @Query("SELECT * from asteroid WHERE closeApproachDate >= :dateToday ORDER BY closeApproachDate DESC")
-    fun getListOfAsteroids(dateToday: String): LiveData<List<AsteroidDBEntity>>
+    @Query("SELECT * from asteroid WHERE closeApproachDate >= :date ORDER BY closeApproachDate DESC")
+    fun getListOfAsteroids(date: String): LiveData<List<AsteroidDBEntity>>
+
+    @Query("DELETE FROM asteroid WHERE closeApproachDate < :date")
+    fun deleteDataBeforeDate(date: String)
 
     @Query("DELETE FROM asteroid")
     suspend fun clearDB()
 }
 
-@Database(entities = [AsteroidDBEntity::class], version = 1)
+@Database(entities = [AsteroidDBEntity::class], version = 1, exportSchema = false)
 abstract class AsteroidDatabase : RoomDatabase() {
 
     abstract val asteroidDao: AsteroidDao
