@@ -1,11 +1,15 @@
-package com.udacity.asteroidradar
+package com.udacity.asteroidradar.utils
 
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.domain.State
 import com.udacity.asteroidradar.main.MainRecyclerViewAdapter
 
 @BindingAdapter("statusIcon")
@@ -18,20 +22,20 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
 }
 
 @BindingAdapter("hazardDescription")
-fun bindHazardDescription(textView: ImageView, isHazardous: Boolean) {
-    textView.contentDescription = if (isHazardous) {
-        textView.resources.getString(R.string.potentially_hazardous_asteroid_image)
+fun bindHazardDescription(imageView: ImageView, isHazardous: Boolean) {
+    imageView.contentDescription = if (isHazardous) {
+        imageView.resources.getString(R.string.potentially_hazardous_asteroid_image)
     } else {
-        textView.resources.getString(R.string.not_hazardous_asteroid_image)
+        imageView.resources.getString(R.string.not_hazardous_asteroid_image)
     }
 }
 
 @BindingAdapter("pictureOfDayDescription")
-fun bindPictureOfDayDescription(textView: ImageView, title: String?) {
-    textView.contentDescription = if (!title.isNullOrEmpty()) {
-        textView.resources.getString(R.string.nasa_picture_of_day_content_description_format, title)
+fun bindPictureOfDayDescription(imageView: ImageView, title: String?) {
+    imageView.contentDescription = if (!title.isNullOrEmpty()) {
+        imageView.resources.getString(R.string.nasa_picture_of_day_content_description_format, title)
     } else {
-        textView.resources.getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet)
+        imageView.resources.getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet)
     }
 }
 
@@ -77,4 +81,13 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?) {
     val adapter = recyclerView.adapter as MainRecyclerViewAdapter
     adapter.submitList(data)
+}
+
+@BindingAdapter("loaderState")
+fun bindLoaderState(progressBar: ProgressBar, state: State?) {
+    when (state) {
+        State.LOADING -> progressBar.visibility = View.VISIBLE
+        State.ERROR -> progressBar.visibility = View.GONE
+        State.DONE -> progressBar.visibility = View.GONE
+    }
 }

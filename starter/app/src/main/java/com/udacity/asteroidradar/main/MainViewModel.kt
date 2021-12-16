@@ -4,10 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.api.getFormattedDate
 import com.udacity.asteroidradar.database.getDatabase
-import com.udacity.asteroidradar.domain.Asteroid
-import com.udacity.asteroidradar.domain.Filter
-import com.udacity.asteroidradar.domain.NasaDataRepository
-import com.udacity.asteroidradar.domain.PictureOfDay
+import com.udacity.asteroidradar.domain.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
@@ -20,7 +17,7 @@ class MainViewModel(application: Application) : ViewModel() {
     val asteroidList: LiveData<List<Asteroid>>
         get() = _asteroidList
 
-    val _asteroidList = repository.asteroids
+    private val _asteroidList = repository.asteroids
 
     val pictureOfDay: LiveData<PictureOfDay>
         get() = _pictureOfDay
@@ -29,6 +26,10 @@ class MainViewModel(application: Application) : ViewModel() {
     val navigateToSelectedItem: LiveData<Asteroid>
         get() = _navigateToSelectedItem
     private val _navigateToSelectedItem = MutableLiveData<Asteroid>()
+
+    val state: LiveData<State>
+        get() = _state
+    private val _state = MutableLiveData<State>()
 
     init {
         viewModelScope.launch {
@@ -41,31 +42,36 @@ class MainViewModel(application: Application) : ViewModel() {
         currentJob?.cancel()
         when (filter) {
             Filter.WEEK -> {
+                _state.value = State.LOADING
                 currentJob = viewModelScope.launch {
-                    repository.getListOfAsteroids(
-                        getFormattedDate(Calendar.getInstance()),
-                        getFormattedDate(Calendar.getInstance().apply {
-                            this.add(Calendar.DAY_OF_YEAR, 7)
-                        })
-                    )
+                    kotlin.runCatching {
+                        repository.getListOfAsteroids(
+                            getFormattedDate(Calendar.getInstance()),
+                            getFormattedDate(Calendar.getInstance().apply {
+                                this.add(Calendar.DAY_OF_YEAR, 7)
+                            })
+                        )
+                    }.onSuccess {
+                        _state.value = State.DONE
+                    }.onFailure {
+                        _state.value = State.ERROR
+                    }
                 }
             }
 
             Filter.TODAY -> {
+                _state.value = State.LOADING
                 currentJob = viewModelScope.launch {
-                    repository.getListOfAsteroids(
-                        getFormattedDate(Calendar.getInstance()),
-                        getFormattedDate(Calendar.getInstance())
-                    )
-                }
-            }
-
-            Filter.SAVED -> {
-                currentJob = viewModelScope.launch {
-                    repository.getListOfAsteroids(
-                        getFormattedDate(Calendar.getInstance()),
-                        getFormattedDate(Calendar.getInstance())
-                    )
+                    kotlin.runCatching {
+                        repository.getListOfAsteroids(
+                            getFormattedDate(Calendar.getInstance()),
+                            getFormattedDate(Calendar.getInstance())
+                        )
+                    }.onSuccess {
+                        _state.value = State.DONE
+                    }.onFailure {
+                        _state.value = State.ERROR
+                    }
                 }
             }
         }

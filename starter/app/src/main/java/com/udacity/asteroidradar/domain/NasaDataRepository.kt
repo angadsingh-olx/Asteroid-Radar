@@ -41,16 +41,11 @@ class NasaDataRepository(val database: AsteroidDatabase) {
 
     suspend fun getListOfAsteroids(startDate: String, endDate: String) {
         withContext(Dispatchers.IO) {
-            kotlin.runCatching {
-                Network.apiService.getNeoFeedData(BuildConfig.NASA_API_KEY, startDate, endDate)
-            }.onSuccess {
-                if (it.isSuccessful) {
-                    database.asteroidDao.clearDB()
-                    val result = parseAsteroidsJsonResult(JSONObject(it.body()!!))
-                    database.asteroidDao.insertAllAsteroid(result.asDatabaseModel())
-                }
-            }.onFailure {
-                it.printStackTrace()
+            val response = Network.apiService.getNeoFeedData(BuildConfig.NASA_API_KEY, startDate, endDate)
+            if (response.isSuccessful) {
+                database.asteroidDao.clearDB()
+                val result = parseAsteroidsJsonResult(JSONObject(response.body()!!))
+                database.asteroidDao.insertAllAsteroid(result.asDatabaseModel())
             }
         }
     }
