@@ -53,10 +53,12 @@
             android:id="@+id/dangerImages"
             android:layout_width="@dimen/image_size_medium"
             android:layout_height="@dimen/image_size_medium"
+            android:clickable="true"
             app:layout_constraintStart_toEndOf="@id/asteroidName"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:hazardDescription="@{asteroid.potentiallyHazardous}"
             app:statusIcon="@{asteroid.potentiallyHazardous}"
             tools:src="@drawable/ic_status_potentially_hazardous"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
