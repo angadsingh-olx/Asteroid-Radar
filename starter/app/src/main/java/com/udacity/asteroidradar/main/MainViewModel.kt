@@ -1,9 +1,9 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.getFormattedDate
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.domain.NasaDataRepository
@@ -12,10 +12,16 @@ import java.util.*
 
 class MainViewModel(application: Application) : ViewModel() {
 
-    val repository = NasaDataRepository(getDatabase(application))
+    private val repository = NasaDataRepository(getDatabase(application))
     val asteroidList = repository.asteroids
 
-    val pictureOfDay = repository.pictureOfDayLifeData
+    val pictureOfDay: LiveData<PictureOfDay>
+        get() = _pictureOfDay
+    private val _pictureOfDay = repository.pictureOfDayLifeData
+
+    val navigateToSelectedItem: LiveData<Asteroid>
+        get() = _navigateToSelectedItem
+    private val _navigateToSelectedItem = MutableLiveData<Asteroid>()
 
     init {
         viewModelScope.launch {
@@ -24,6 +30,14 @@ class MainViewModel(application: Application) : ViewModel() {
             }))
             repository.getPictureOfTheDay()
         }
+    }
+
+    fun onItemClicked(asteroid: Asteroid) {
+        _navigateToSelectedItem.postValue(asteroid)
+    }
+
+    fun displayAsteroidDetailsComplete() {
+        _navigateToSelectedItem.value = null
     }
 
     class Factory(val app: Application) : ViewModelProvider.Factory {

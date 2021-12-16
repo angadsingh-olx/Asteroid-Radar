@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.Network
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
@@ -25,14 +26,14 @@ class NasaDataRepository(val database: AsteroidDatabase) {
     suspend fun getPictureOfTheDay(){
         withContext(Dispatchers.IO) {
 
-            val result = Network.apiService.getPictureOfTheDay("").body()!!
+            val result = Network.apiService.getPictureOfTheDay(BuildConfig.NASA_API_KEY).body()!!
             pictureOfDayLifeData.postValue(result)
         }
     }
 
     suspend fun getListOfAsteroids(startDate: String, endDate: String) {
         withContext(Dispatchers.IO) {
-            val response = Network.apiService.getNeoFeedData("", startDate, endDate)
+            val response = Network.apiService.getNeoFeedData(BuildConfig.NASA_API_KEY, startDate, endDate)
             if (response.isSuccessful) {
                 val result = parseAsteroidsJsonResult(JSONObject(response.body()!!))
                 database.asteroidDao.insertAllAsteroid(result.asDatabaseModel())

@@ -6,6 +6,10 @@
 
     <data>
         <variable
+            name="clickListener"
+            type="com.udacity.asteroidradar.utils.OnItemClickHandler" />
+
+        <variable
             name="asteroid"
             type="com.udacity.asteroidradar.Asteroid" />
     </data>
@@ -14,6 +18,7 @@
         android:id="@+id/parentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onItemClicked(asteroid)}"
         android:padding="@dimen/padding_medium">
 
         <androidx.appcompat.widget.AppCompatTextView
