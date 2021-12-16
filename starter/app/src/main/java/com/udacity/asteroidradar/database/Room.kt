@@ -28,8 +28,8 @@ interface AsteroidDao {
     @Insert(onConflict = REPLACE)
     suspend fun insertAllAsteroid(asteroidList: List<AsteroidDBEntity>)
 
-    @Query("SELECT * from asteroid ORDER BY closeApproachDate DESC")
-    fun getListOfAsteroids(): LiveData<List<AsteroidDBEntity>>
+    @Query("SELECT * from asteroid WHERE closeApproachDate >= :dateToday ORDER BY closeApproachDate DESC")
+    fun getListOfAsteroids(dateToday: String): LiveData<List<AsteroidDBEntity>>
 
     @Query("DELETE FROM asteroid")
     suspend fun clearDB()

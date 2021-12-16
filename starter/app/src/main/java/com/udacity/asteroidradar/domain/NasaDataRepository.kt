@@ -7,6 +7,7 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.Network
+import com.udacity.asteroidradar.api.getFormattedDate
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.asDatabaseModel
@@ -14,6 +15,7 @@ import com.udacity.asteroidradar.database.asDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.util.*
 
 class NasaDataRepository(val database: AsteroidDatabase) {
 
@@ -22,7 +24,8 @@ class NasaDataRepository(val database: AsteroidDatabase) {
     val pictureOfDayLifeData: LiveData<PictureOfDay>
         get() = _pictureOfDayLifeData
 
-    val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.asteroidDao.getListOfAsteroids()) {
+    val asteroids: LiveData<List<Asteroid>> = Transformations.map(database.asteroidDao.getListOfAsteroids(
+            getFormattedDate(Calendar.getInstance()))) {
         it.asDomainModel()
     }
 
