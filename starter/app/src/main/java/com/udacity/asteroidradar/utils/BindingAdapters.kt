@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.main.MainRecyclerViewAdapter
 
 @BindingAdapter("statusIcon")
@@ -40,7 +41,7 @@ fun bindPoDImageLink(imageView: ImageView, imageUrl: String?) {
         Picasso
             .with(imageView.context)
             .load(imageUrl)
-            .placeholder(R.color.app_background)
+            .placeholder(R.color.picture_of_day_placeholder)
             .into(imageView)
     }
 }

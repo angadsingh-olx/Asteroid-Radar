@@ -3,9 +3,7 @@ package com.udacity.asteroidradar.domain
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.BuildConfig
-import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.Network
 import com.udacity.asteroidradar.api.getFormattedDate
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult

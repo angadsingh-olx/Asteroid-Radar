@@ -1,7 +1,7 @@
 package com.udacity.asteroidradar.utils
 
-import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.domain.Asteroid
 
-interface OnItemClickHandler {
+interface OnItemClickListener {
     fun onItemClicked(asteroid: Asteroid)
 }

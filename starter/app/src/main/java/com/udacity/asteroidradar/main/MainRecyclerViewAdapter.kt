@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.databinding.ItemAsteroidListBinding
-import com.udacity.asteroidradar.utils.OnItemClickHandler
+import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.utils.OnItemClickListener
 
-class MainRecyclerViewAdapter(val itemClickListener: OnItemClickHandler): ListAdapter<Asteroid, MainRecyclerViewAdapter.MainRecyclerViewHolder>(DiffCallback) {
+class MainRecyclerViewAdapter(val itemClickListener: OnItemClickListener): ListAdapter<Asteroid, MainRecyclerViewAdapter.MainRecyclerViewHolder>(DiffCallback) {
 
     companion object DiffCallback : DiffUtil.ItemCallback<Asteroid>() {
         override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {

@@ -6,11 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.Filter
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import com.udacity.asteroidradar.utils.OnItemClickHandler
+import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.domain.Filter
+import com.udacity.asteroidradar.utils.OnItemClickListener
 
 class MainFragment : Fragment() {
 
@@ -23,7 +23,7 @@ class MainFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        val adapter = MainRecyclerViewAdapter(itemClickListener = object : OnItemClickHandler {
+        val adapter = MainRecyclerViewAdapter(itemClickListener = object : OnItemClickListener {
             override fun onItemClicked(asteroid: Asteroid) {
                 viewModel.onItemClicked(asteroid)
             }
