@@ -7,4 +7,5 @@
     <dimen name="padding_tiny">4dp</dimen>
     <dimen name="height_banner_image">220dp</dimen>
     <dimen name="zero_dimen">0dp</dimen>
+    <dimen name="image_portrait_width">320dp</dimen>
 </resources>
