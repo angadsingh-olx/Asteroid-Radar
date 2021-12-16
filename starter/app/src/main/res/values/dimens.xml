@@ -4,4 +4,7 @@
     <dimen name="image_size_medium">32dp</dimen>
     <dimen name="padding_medium">16dp</dimen>
     <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_tiny">4dp</dimen>
+    <dimen name="height_banner_image">220dp</dimen>
+    <dimen name="zero_dimen">0dp</dimen>
 </resources>

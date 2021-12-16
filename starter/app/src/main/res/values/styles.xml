@@ -8,14 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TextAppearance.Title.Light" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textSize">16sp</item>
+    <style name="TextAppearance.Heading.Light" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="TextAppearance.Subtitle.Light" parent="TextAppearance.MaterialComponents.Headline6">
+    <style name="TextAppearance.Heading.Dark" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/default_text_color</item>
+    </style>
+
+    <style name="TextAppearance.Title.Light" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
@@ -23,6 +30,11 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/default_text_color</item>
+    </style>
+
+    <style name="TextAppearance.Subtitle.Light" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="TextAppearance.Subtitle.Dark" parent="TextAppearance.MaterialComponents.Headline6">
