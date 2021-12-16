@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="asteroid"
+            type="com.udacity.asteroidradar.Asteroid" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_medium">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/asteroidName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Title.Dark"
+            android:text="@{asteroid.codename}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/asteroidDate"
+            app:layout_constraintEnd_toStartOf="@id/dangerImages"
+            app:layout_constraintBottom_toTopOf="@id/asteroidDate"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:textColor="@android:color/black"
+            tools:text="68347 (2001 KB67)"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/asteroidDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{asteroid.closeApproachDate}"
+            style="@style/TextAppearance.Subtitle.Dark"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/asteroidName"
+            app:layout_constraintEnd_toStartOf="@id/dangerImages"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:textColor="@android:color/black"
+            tools:text="2020-02-08"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/dangerImages"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
+            app:layout_constraintStart_toEndOf="@id/asteroidName"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:statusIcon="@{asteroid.potentiallyHazardous}"
+            tools:src="@drawable/ic_status_potentially_hazardous"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
